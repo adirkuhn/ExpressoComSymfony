@@ -1,7 +1,7 @@
 $(document).ready(function(){
     var Layout = $("#wrap").layout({
         applyDefaultStyles: true,
-        north__size:        70,
+        north__size:        72,
         north__closable:    true,
         north__resizable:   false,
         north__slidable:    false,       

@@ -1,12 +1,5 @@
 var login = {
     load : function(){
-        var template = $("#login").html();
-        var data = {
-            title : "Login",
-            user : "Usuário",
-            pass : "Senha",
-            login: "Login"
-        };
         var html = require('ejs').render(template, {data : data});
         var login = $(html).find(".login-window");
         login.dialog({

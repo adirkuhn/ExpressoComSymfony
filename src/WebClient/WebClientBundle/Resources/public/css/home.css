@@ -1,5 +1,6 @@
 body #wrap.expresso-container div.ui-layout-north{
 	background-image : url(../images/cabecalho_pagina.jpg) !important;
+	overflow: hidden !important;
 }
 
 .north-menu-images .north-menu-image-right{
@@ -7,11 +8,36 @@ body #wrap.expresso-container div.ui-layout-north{
 	padding-left: 20px;
 }
 
-.north-menu-images .north-menu-image-left{
-	float : left;
-}
-
 .ui-layout-north ul.north-menu-images li.north-menu-image{
 	list-style-type: none;
-	display: inline;
+	display: inline-block;
+}
+
+.ui-layout-north ul.north-menu-images{
+	margin: 0;
+}
+
+.ui-layout-north ul.north-menu-user-info li.north-menu-user{
+	list-style-type: none;
+	display: inline-block;
+	color : white;
+	font-weight: bold;
+}
+.ui-layout-north ul.north-menu-user-info{
+	margin: 0;
+	padding-top: 7px;
+	padding-bottom: 2px;
+}
+.ui-layout-north ul.north-menu-user-info li.north-menu-user-logout a{
+	color : #EC8C0B;
+	font-weight: bold;
+}
+
+.ui-layout-north ul.north-menu-user-info li.north-menu-user.north-menu-user-right{
+	float: right;
+}
+
+.ui-layout-north ul.north-menu-user-info li.north-menu-user.north-menu-user-right a{
+	color : #EC8C0B;
+	font-weight: bold;
 }

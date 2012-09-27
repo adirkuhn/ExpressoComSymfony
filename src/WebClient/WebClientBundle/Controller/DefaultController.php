@@ -9,7 +9,11 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('WebClientBundle:Default:index.html.twig' );
+		//$token->getUser()->getAttribute('uid');
+        return $this->render('WebClientBundle:Default:index.html.twig',array(
+            'cn' => $this->getUser()->getAttribute('cn'),
+            'mail'         => $this->getUser()->getAttribute('mail')
+        ));
     }
 
     public function loginAction()
@@ -24,7 +28,7 @@ class DefaultController extends Controller
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
-        
+
         return $this->render('WebClientBundle:Default:login.html.twig', array(
             // last username entered by the user
             'last_username' => $session->get(SecurityContext::LAST_USERNAME),
