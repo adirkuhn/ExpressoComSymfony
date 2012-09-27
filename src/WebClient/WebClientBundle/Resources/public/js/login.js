@@ -1,8 +1,8 @@
 var login = {
     load : function(){
-        var html = require('ejs').render(template, {data : data});
-        var login = $(html).find(".login-window");
-        login.dialog({
+        API.render("Login", loginObj, 'body');
+        var login = $("body .login-window");
+        login.wijdialog({
             buttons: {
                 "Acessar": function () {
                     $(this).parents(".ui-dialog").find("form").submit();
@@ -11,7 +11,14 @@ var login = {
             },
             draggable:false,
             resizable:false,
-            position: ["right","center"]
+            captionButtons:{
+                pin: { visible: false },
+                refresh: { visible: false },
+                toggle: { visible: false },
+                minimize: { visible: false },
+                maximize: { visible: false },
+                close: { visible: false }
+            }
         });
         //SOME INTERFACE DETAILS
         login.find('input[type=button]').button();
@@ -20,10 +27,7 @@ var login = {
                $(this).parents(".ui-dialog").find("form").submit();
             }
         });
-        login.parents(".ui-dialog").css("left", "75%");
-        login.parents(".ui-dialog").css("top", "30%");
-        login.parents(".ui-dialog").css("border-radius", "5px");
-        login.parents(".ui-dialog").find(".ui-dialog-titlebar-close").remove();
+        login.parents(".ui-dialog").css({"left": "75%", "top": "30%", "border-radius":"5px"});
     }
 }
 onload = function(){

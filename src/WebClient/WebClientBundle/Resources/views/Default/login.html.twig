@@ -7,8 +7,13 @@
 		<script src="{{ asset('bundles/webclient/plugins/ejs/ejs.min.js') }}" type="text/javascript" ></script>
 		<script src="{{ asset('bundles/webclient/plugins/ejs/ejs.js') }}" type="text/javascript" ></script>
 		<script id="login" type="text/javascript">
-			var error = {{ error.message }};
-            var last_user = {{last_username}};
+			var loginObj = {
+				last_user :  "{{last_username }}",
+				error : undefined
+			};
+			{% if error %}
+				loginObj.error = "{{ error.message | trans}}";
+			{% endif %}
 		</script>
         <script src="{{ asset('bundles/webclient/plugins/bootstrap/jquery-ui-1.8.16.custom.min.js') }}" type="text/javascript" ></script>
         <script src="{{ asset('bundles/webclient/plugins/wijmo/jquery.wijmo-open.min.js') }}" type="text/javascript" ></script>
@@ -17,9 +22,12 @@
         <link href="{{ asset('bundles/webclient/plugins/wijmo/jquery-ui.wijmo.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('bundles/webclient/plugins/wijmo/jquery.wijmo-open.2.2.0.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('bundles/webclient/plugins/bootstrap/bootstrap.css') }}" rel="stylesheet" type="text/css" />
-		<script src="{{ asset('bundles/webclient/js/login.js') }}" type="text/javascript" ></script>
         <script src="{{ asset('bundles/webclient/js/API.js') }}" type="text/javascript" ></script>
         <script src="{{ asset('bundles/webclient/js/Exception.js') }}" type="text/javascript" ></script>
+                <script type="text/javascript">
+            var API = new oAPI( "{{ asset('') }}app_dev.php" ,  "{{ asset('bundles/webclient') }}" );
+        </script>
+        <script src="{{ asset('bundles/webclient/js/login.js') }}" type="text/javascript" ></script>
 	</head>
 
     <body style="background : url({{ asset('bundles/webclient/images/logo-home.jpeg') }}) no-repeat;">    
