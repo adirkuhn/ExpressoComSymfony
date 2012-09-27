@@ -1,0 +1,17 @@
+body #wrap.expresso-container div.ui-layout-north{
+	background-image : url(../images/cabecalho_pagina.jpg) !important;
+}
+
+.north-menu-images .north-menu-image-right{
+	float : right;
+	padding-left: 20px;
+}
+
+.north-menu-images .north-menu-image-left{
+	float : left;
+}
+
+.ui-layout-north ul.north-menu-images li.north-menu-image{
+	list-style-type: none;
+	display: inline;
+}
