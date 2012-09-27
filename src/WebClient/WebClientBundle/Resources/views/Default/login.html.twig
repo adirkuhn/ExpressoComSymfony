@@ -10,9 +10,12 @@
 			<div class="login-page" style="display:none;">
 				<div class="login-window" title="{{ "Sign in" | trans }}" style="border-radius:5px;"> 
                     <form action="{{ path("_login_check") }}" method="POST">
+                        {% if error %}
+                            <div class="message-login-error">{{ error.message }}</div>
+                        {% endif %}
     					<div style="width:100%">
     						<span>{{"User :" | trans}}</span>
-    						<input type="text" style="width: 100%;" name="_username"/>
+    						<input type="text" style="width: 100%;" name="_username" value="{{ last_username }}"/>
     					</div>
     					<div style="width:100%">
     						<span>{{"Password :" | trans}}</span>
@@ -22,11 +25,14 @@
 				</div>
 			</div>
 		</script>
-		<script src="{{ asset('bundles/webclient/plugins/bootstrap/jquery-ui-1.8.16.custom.min.js') }}" type="text/javascript" ></script>
-		<link href="{{ asset('bundles/webclient/plugins/jquery/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('bundles/webclient/plugins/jquery/jquery.ui.1.8.16.ie.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('bundles/webclient/plugins/bootstrap/bootstrap.css') }}" rel="stylesheet" type="text/css" />
-		<script src="{{ asset('bundles/webclient/js/init.js') }}" type="text/javascript" ></script>
+        <script src="{{ asset('bundles/webclient/plugins/bootstrap/jquery-ui-1.8.16.custom.min.js') }}" type="text/javascript" ></script>
+        <script src="{{ asset('bundles/webclient/plugins/wijmo/jquery.wijmo-open.min.js') }}" type="text/javascript" ></script>
+        <link href="{{ asset('bundles/webclient/plugins/jquery/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('bundles/webclient/plugins/jquery/jquery.ui.1.8.16.ie.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('bundles/webclient/plugins/wijmo/jquery-ui.wijmo.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('bundles/webclient/plugins/wijmo/jquery.wijmo-open.2.2.0.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('bundles/webclient/plugins/bootstrap/bootstrap.css') }}" rel="stylesheet" type="text/css" />
+		<script src="{{ asset('bundles/webclient/js/login.js') }}" type="text/javascript" ></script>
 	</head>
 
     <body style="background : url({{ asset('bundles/webclient/images/logo-home.jpeg') }}) no-repeat;">    
