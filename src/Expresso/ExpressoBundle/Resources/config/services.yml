@@ -1,0 +1,7 @@
+parameters:
+#    expresso.example.class: Expresso\ExpressoBundle\Example
+
+services:
+#    expresso.example:
+#        class: %expresso.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

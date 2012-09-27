@@ -1,0 +1,17 @@
+WebClientBundle_homepage:
+    pattern:  /
+    defaults: { _controller: WebClientBundle:Default:index }
+
+WebClientBundle_login:
+    pattern:  /login
+    defaults: { _controller: WebClientBundle:Default:login }
+
+WebClientBundle_Templates:
+    pattern:  /template/EJS/{template}
+    defaults: { _controller: WebClientBundle:Template:render }
+
+_login_check:
+    pattern:  /login_check
+
+_logout:
+    pattern:  /logout

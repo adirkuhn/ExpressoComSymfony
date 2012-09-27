@@ -1,0 +1,7 @@
+parameters:
+#    web_client.example.class: WebClient\WebClientBundle\Example
+
+services:
+#    web_client.example:
+#        class: %web_client.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

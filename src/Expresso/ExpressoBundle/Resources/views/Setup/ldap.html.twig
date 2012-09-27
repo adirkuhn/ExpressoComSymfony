@@ -1,0 +1,31 @@
+{% extends 'ExpressoBundle::setup_layout.html.twig' %}
+
+{% block title %} Expresso - Setup - Ldap {% endblock %}
+
+{% block body %}
+    {% form_theme form "SensioDistributionBundle::Configurator/form.html.twig" %}
+    {% include "SensioDistributionBundle::Configurator/steps.html.twig" with { "index": index, "count": count } %}
+
+    <h1>Configure LDAP paramenters</h1>
+    <p>Configuration of ldap connection parameters.</p>
+
+    {{ form_errors(form) }}
+    <form action="{{ path('ExpressoBundle_setup', { 'index': index }) }}" method="POST">
+        <div class="symfony-form-column">
+            {{ form_row(form.host) }}
+            {{ form_row(form.port) }}
+            {{ form_row(form.dn) }}
+        </div>
+        <div class="symfony-form-column">
+            {{ form_row(form.user) }}
+            {{ form_row(form.pass) }}
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="symfony-form-footer">
+            <p><input type="submit" value="Next Step" class="symfony-button-grey" /></p>
+            <p>* mandatory fields</p>
+        </div>
+    </form>
+{% endblock %}
