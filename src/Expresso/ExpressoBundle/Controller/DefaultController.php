@@ -10,7 +10,7 @@ class DefaultController extends Controller
     public function MenuTopAction()
     {
         $menu = array();
-        $menu[] = array( 'name' => 'Pagina Inicial' , 'icon' => 'MenuTop/agendamento.png' , 'href' => 'Home' );
+        $menu[] = array( 'name' => 'Página Inicial' , 'icon' => 'MenuTop/home.png' , 'href' => 'Home' );
         $menu[] = array( 'name' => 'Quadro de Avisos' , 'icon' => 'MenuTop/billboard.png' , 'href' => 'billboard' );
         $menu[] = array( 'name' => 'Correio' , 'icon' => 'MenuTop/mail.png' , 'href' => 'Mail' );
         $menu[] = array( 'name' => 'Chamados' , 'icon' => 'MenuTop/serviceCall.png' , 'href' => 'ServiceCall' );
