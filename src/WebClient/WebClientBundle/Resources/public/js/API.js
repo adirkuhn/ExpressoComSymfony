@@ -16,7 +16,7 @@ oAPI.prototype.render = function ( template , data , append  )
     }
     catch(e)
     {
-        Exeption.log( 'API.render'  , arguments )
+        Exception.log( 'API.render'  , arguments )
         return false;
     }
 
@@ -29,7 +29,7 @@ oAPI.prototype.renderRestAppend = function ( template , restURL , append )
         $(append).append( API.render( template  , data ) );
     }
 
-    API.restGET( restURL ,  sucessREAD , function ()  {  Exeption.log( 'API.renderRestAppend' , arguments ) } );
+    API.restGET( restURL ,  sucessREAD , function ()  {  Exception.log( 'API.renderRestAppend' , arguments ) } );
 }
 
 oAPI.prototype.renderAppend = function (template , data , append)
@@ -39,22 +39,22 @@ oAPI.prototype.renderAppend = function (template , data , append)
 
 oAPI.prototype.restGET = function ( url , sucess , error )
 {
-    $.read( this.URL + '/rest/' + url , '' , sucess , error ?  error : function ()  {  Exeption.log( 'API.restGET' , arguments ) } );
+    $.read( this.URL + '/rest/' + url , '' , sucess , error ?  error : function ()  {  Exception.log( 'API.restGET' , arguments ) } );
 }
 
 oAPI.prototype.restPUT = function ( url , data , sucess , error )
 {
-    $.update( this.URL + '/rest/' + url , data , sucess , error ?  error : function ()  {  Exeption.log( 'API.restPUT' , arguments ) } );
+    $.update( this.URL + '/rest/' + url , data , sucess , error ?  error : function ()  {  Exception.log( 'API.restPUT' , arguments ) } );
 }
 
 oAPI.prototype.restDELETE = function ( url , sucess , error )
 {
-    $.destroy( this.URL + '/rest/' + url , '' , sucess , error ?  error : function ()  {  Exeption.log( 'API.restDELETE' , arguments ) } );
+    $.destroy( this.URL + '/rest/' + url , '' , sucess , error ?  error : function ()  {  Exception.log( 'API.restDELETE' , arguments ) } );
 }
 
 oAPI.prototype.restPOST = function (url , data , sucess , error)
 {
-    $.create( this.URL + '/rest/' + url , data , sucess , error ?  error : function ()  {  Exeption.log( 'API.restPOST' , arguments ) } );
+    $.create( this.URL + '/rest/' + url , data , sucess , error ?  error : function ()  {  Exception.log( 'API.restPOST' , arguments ) } );
 
 }
 
