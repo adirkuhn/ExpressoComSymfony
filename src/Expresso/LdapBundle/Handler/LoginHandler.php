@@ -12,15 +12,6 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface, Authenticat
 {
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
-
-        //TODO: remover o quanto antes
-        //carrega session do expresso antigo
-        $_SESSION['_POST']['login'] = $token->getUser()->getAttribute('uid');
-        $_SESSION['_POST']['user'] = $token->getUser()->getAttribute('uid');
-        $_SESSION['_POST']['passwd'] = 'prognus';
-        $_SESSION['_POST']['passwd_type'] = 'text';
-        $_SESSION['_POST']['sessionid'] = session_id();
-
         return new RedirectResponse($request->getBaseUrl());
     }
 
