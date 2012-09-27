@@ -26,7 +26,7 @@ oAPI.prototype.renderRestAppend = function ( template , restURL , append )
 {
     var sucessREAD = function ( data , headers , xhr)
     {
-        $(append).append( API.render( template  , data ) );
+        API.render( template  , data, append );
     }
 
     API.restGET( restURL ,  sucessREAD , function ()  {  Exception.log( 'API.renderRestAppend' , arguments ) } );
