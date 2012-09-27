@@ -1,0 +1,3 @@
+REST_TopMenu:
+    pattern:  /MenuTop
+    defaults: { _controller: ExpressoBundle:Default:MenuTop }

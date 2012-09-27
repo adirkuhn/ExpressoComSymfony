@@ -9,6 +9,8 @@ WebClientBundle_login:
 WebClientBundle_Templates:
     pattern:  /template/EJS/{template}
     defaults: { _controller: WebClientBundle:Template:render }
+    requirements:
+        _method:  GET
 
 _login_check:
     pattern:  /login_check
