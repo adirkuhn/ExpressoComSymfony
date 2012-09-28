@@ -8,10 +8,10 @@ WebClient:
     resource: "@WebClientBundle/Resources/config/routing.yml"
     prefix:   /
 
-Expresso:
-    resource: "@ExpressoBundle/Resources/config/routing.yml"
-    prefix:   /
+# Expresso:
+#     resource: "@ExpressoBundle/Resources/config/routing.yml"
+#     prefix:   /
 
 ExpressoRest:
     resource: "@ExpressoBundle/Resources/config/restRouting.yml"
-    prefix:   /rest
+    prefix:   /rest/Expresso/

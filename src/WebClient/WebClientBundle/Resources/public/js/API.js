@@ -16,7 +16,7 @@ oAPI.prototype.render = function ( template , data , append  )
     }
     catch(e)
     {
-        Exception.log( 'API.render'  , arguments )
+        Exception.logException( 'API.render'  , e ,  arguments )
         return false;
     }
 
@@ -32,9 +32,22 @@ oAPI.prototype.renderRestAppend = function ( template , restURL , append )
     API.restGET( restURL ,  sucessREAD , function ()  {  Exception.log( 'API.renderRestAppend' , arguments ) } );
 }
 
-oAPI.prototype.renderAppend = function (template , data , append)
+oAPI.prototype.loadModule = function ( module )
 {
-
+    if(Module.destroy())
+    {
+        $.getScript(this.assectURL+'/js/module/'+module+'.js')
+            .done(function(script, textStatus) {
+               Module.load();
+            })
+            .fail(function(jqxhr, settings, exception) {
+                Exception.error( 'API.loadModule' , arguments );
+            });
+    }
+    else
+    {
+        Exception.log( 'API.loadModule' , 'Falha ao destruir modulo');
+    }
 }
 
 oAPI.prototype.restGET = function ( url , sucess , error )

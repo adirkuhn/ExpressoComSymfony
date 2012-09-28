@@ -21,9 +21,10 @@
 		{# Page #}
 		
 		{# JS #}
+        <script src="{{ asset('bundles/webclient/js/Exception.js') }}" type="text/javascript" ></script>
 		<script src="{{ asset('bundles/webclient/js/home.js') }}" type="text/javascript" ></script>
 		<script src="{{ asset('bundles/webclient/js/API.js') }}" type="text/javascript" ></script>
-        <script src="{{ asset('bundles/webclient/js/Exception.js') }}" type="text/javascript" ></script>
+        <script src="{{ asset('bundles/webclient/js/module/Home.js') }}" type="text/javascript" ></script>
         <script type="text/javascript">
             var API = new oAPI( "{{ asset('') }}app_dev.php" ,  "{{ asset('bundles/webclient') }}" );
         </script>
@@ -64,8 +65,8 @@
 					</ul>
 				</div>
 			</div>
-			<div class="ui-layout-center">			
-				<p>Baixo</p>
+			<div id='main' class="ui-layout-center">
+
 			</div>
 		</div>
 	</body>
