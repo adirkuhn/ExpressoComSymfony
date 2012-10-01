@@ -2,7 +2,7 @@ function oLogin(){
 }
 
 oLogin.prototype.load = function(){
-    API.render("Login", loginObj, 'body');
+    API.render("Expresso/Login", loginObj, 'body');
     var login = $("body .login-window");
     login.wijdialog({
         buttons: {

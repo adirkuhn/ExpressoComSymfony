@@ -1,6 +1,6 @@
 var oMail = function()
 {
-
+    this.name = 'Mail';
 }
 
 oMail.prototype.load = function()

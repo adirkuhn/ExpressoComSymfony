@@ -7,7 +7,7 @@ WebClientBundle_login:
     defaults: { _controller: WebClientBundle:Default:login }
 
 WebClientBundle_Templates:
-    pattern:  /template/EJS/{template}
+    pattern:  /template/EJS/{module}/{template}
     defaults: { _controller: WebClientBundle:Template:render }
     requirements:
         _method:  GET

@@ -9,6 +9,6 @@ $(document).ready(function(){
         livePaneResizing: true
     });
 
-    API.renderRestAppend("Menu", "Expresso/MenuTop", ".north-menu-images");
+    API.renderRestAppend("Expresso/Menu", "Expresso/MenuTop", ".north-menu-images");
     Module.load();
 });
