@@ -8,6 +8,7 @@
 
 #tabs ul.ui-tabs-nav li a{
   cursor: pointer;
+  border:none;
 }
 
 #tabs.ui-widget-content {

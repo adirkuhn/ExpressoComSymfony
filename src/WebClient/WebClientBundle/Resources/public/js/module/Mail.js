@@ -6,7 +6,7 @@ var oMail = function()
 oMail.prototype.load = function()
 {
     $('#main').empty();
-    API.render("Mail", {}, '#main');
+    API.render("Mail/Mail", {}, '#main');
     $('#main').layout({
         applyDefaultStyles: true,
         center__maxSize : 0,
