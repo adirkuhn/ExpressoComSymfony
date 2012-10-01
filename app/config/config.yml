@@ -88,11 +88,10 @@ services:
         class:  Expresso\ImapBundle\Service\ImapService
         arguments:
             config:
-                host: 'expressodev'
-                port: '25'
+                host: '127.0.0.1'
+                port: '143'
                 TLSEncryption: false
                 delimiter: '/'
-                #username: ''
-                #userpass: ''
+                folders: [ "INBOX", "Drafts" , "Sent" , "Spam" , "Trash"]
             token: @security.context
 

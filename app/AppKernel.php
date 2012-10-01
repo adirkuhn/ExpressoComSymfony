@@ -22,6 +22,7 @@ class AppKernel extends Kernel
 		    //Expresso Bundles
             new Expresso\ExpressoBundle\ExpressoBundle(),
             new Expresso\LdapBundle\LdapBundle(),
+            new Expresso\MailBundle\MailBundle(),
             new WebClient\WebClientBundle\WebClientBundle(),
         );
 

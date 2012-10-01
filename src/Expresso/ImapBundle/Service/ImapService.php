@@ -18,7 +18,6 @@ class ImapService
         $this->config['userpass'] = $token->getAttribute('plainPassword');
      }
 
-
     public function openMailbox( $folder = 'INBOX' )
     {
         $newFolder = mb_convert_encoding($folder, 'UTF7-IMAP' , 'UTF-8');
@@ -35,6 +34,11 @@ class ImapService
             $this->mbox = imap_open( $url , $this->config['username'] , $this->config['userpass'] );
 
         return $this->mbox;
+    }
+
+    public function getDefaultFolders()
+    {
+        return $this->config['folders'];
     }
 
     /**
@@ -70,6 +74,12 @@ class ImapService
     public function getMailBoxes ( $pattern  = '*')
     {
         return imap_getmailboxes( $this->mbox , '{'.$this->config['host'].":".$this->config['port'].$this->config['options'].'}'.$this->mboxFolder , $pattern );
+    }
+
+
+    public function status ( $folder  = 'INBOX' , $options = SA_ALL)
+    {
+        return imap_status( $this->mbox , '{'.$this->config['host'].":".$this->config['port'].$this->config['options'].'}'.$folder , $options );
     }
 
 

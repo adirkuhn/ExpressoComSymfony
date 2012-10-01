@@ -1,0 +1,3 @@
+REST_Mail_ListFolders:
+    pattern:  /ListFolders
+    defaults: { _controller: MailBundle:Folder:ListFolders }

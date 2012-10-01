@@ -15,3 +15,7 @@ WebClient:
 ExpressoRest:
     resource: "@ExpressoBundle/Resources/config/restRouting.yml"
     prefix:   /rest/Expresso/
+
+ExpressoMailRest:
+    resource: "@MailBundle/Resources/config/routing.yml"
+    prefix:   /rest/Mail/
