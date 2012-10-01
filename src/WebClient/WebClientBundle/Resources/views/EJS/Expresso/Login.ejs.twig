@@ -1,0 +1,22 @@
+<div class="login-page" style="display:none;">
+    <div class="login-window" title="{{ "Sign in" | trans }}" style="border-radius:5px;">
+        <form action="{{ path("_login_check") }}" method="POST">
+            <%if(data.error){ %>
+            <div class="ui-widget">
+              <div class="ui-state-error ui-corner-all">
+                <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                <%= data.error %></p>
+              </div>
+            </div>
+            <%}%>
+            <div style="width:100%">
+                <span>{{"User :" | trans}}</span>
+                <input type="text" style="width: 100%;" name="_username" value="<%= data.last_user %>"/>
+            </div>
+            <div style="width:100%">
+                <span>{{"Password :" | trans}}</span>
+                <input type="password" style="width: 100%;" name="_password"/>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,3 +1,0 @@
-services:
-    login_handler:
-        class: Expresso\LdapBundle\Handler\LoginHandler

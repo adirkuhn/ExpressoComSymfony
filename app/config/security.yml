@@ -31,9 +31,11 @@ security:
             form_login:
                 check_path: /login_check
                 login_path: /login
+                success_handler: Expresso.Ldap.login_handler
             logout:
                 path:   /logout
                 target: /
+                success_handler: Expresso.Ldap.login_handler
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"

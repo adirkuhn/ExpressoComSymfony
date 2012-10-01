@@ -1,6 +1,6 @@
 var oHome = function()
 {
-
+    this.name = 'Home';
 }
 
 oHome.prototype.load = function()

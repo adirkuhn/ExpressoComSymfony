@@ -33,9 +33,19 @@ class LdapUser implements UserInterface, \Serializable
         $this->attributes = $attributes;
     }
 
+    public function setAttribute( string $name, mixed $value )
+    {
+        $this->attributes[$name] =  $value;
+    }
+
     public function getAttribute($name)
     {
         return isset($this->attributes[$name]) ? $this->attributes[$name] : null ; 
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
     }
 
     public function setRoles(array $roles)
@@ -57,4 +67,6 @@ class LdapUser implements UserInterface, \Serializable
     {
         list($this->roles, $this->attributes) = unserialize($serialized);
     }
+
+
 }

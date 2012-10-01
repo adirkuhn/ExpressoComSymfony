@@ -78,3 +78,21 @@ services:
     Expresso.Ldap.UserProvider:
         class:  Expresso\LdapBundle\Provider\LdapUserProvider
         arguments: [@ExpressoLdap]
+    Expresso.Ldap.login_handler:
+        class: Expresso\LdapBundle\Handler\LoginHandler
+    #    arguments:  [@router, @security.context]
+    #Expresso.Ldap.logout_success_handler:
+    #    class:  Expresso\LdapBundle\Handler\LogoutHandler
+    #    arguments:  [@router, @security.context]
+    ExpressoImap:
+        class:  Expresso\ImapBundle\Service\ImapService
+        arguments:
+            config:
+                host: 'expressodev'
+                port: '25'
+                TLSEncryption: false
+                delimiter: '/'
+                #username: ''
+                #userpass: ''
+            token: @security.context
+
