@@ -53,7 +53,7 @@ class ImapService
     public function decodeMimeString( $string )
     {
         $string =  preg_replace('/\?\=(\s)*\=\?/', '?==?', $string);
-        return preg_replace_callback( '/\=\?([^\?]*)\?([qb])\?([^\?]*)\?=/i' ,array( 'this' , 'decodeMimeStringCallback'), $string);
+        return preg_replace_callback( '/\=\?([^\?]*)\?([qb])\?([^\?]*)\?=/i' ,array( 'self' , 'decodeMimeStringCallback'), $string);
     }
 
     /**
@@ -68,14 +68,13 @@ class ImapService
     private function decodeMimeStringCallback( $matches )
     {
         $str = (strtolower($matches[2]) == 'q') ?  quoted_printable_decode(str_replace('_','=20',$matches[3])) : base64_decode( $matches[3]) ;
-        return ( strtoupper($matches[1]) == 'UTF-8' ) ? mb_convert_encoding(  $str , 'ISO-8859-1' , 'UTF-8') : $str;
+        return ( strtoupper($matches[1]) == 'ISO-8859-1' ) ? mb_convert_encoding(  $str , 'UTF-8' , 'ISO-8859-1') : $str;
     }
 
     public function getMailBoxes ( $pattern  = '*')
     {
         return imap_getmailboxes( $this->mbox , '{'.$this->config['host'].":".$this->config['port'].$this->config['options'].'}'.$this->mboxFolder , $pattern );
     }
-
 
     public function status ( $folder  = 'INBOX' , $options = SA_ALL)
     {
@@ -87,6 +86,37 @@ class ImapService
         return imap_sort( $this->mbox , $criteria , $reverse , $options , $searchCriteria , $charset);
     }
 
+    public function headerInfo ( $message , $SE_UID = false  )
+    {
+        return imap_headerinfo( $this->mbox , $SE_UID ? imap_msgno( $this->mbox , $message ) : $message );
+    }
 
+    function formatMailObject( $obj )
+    {
+        $return = array();
+        $return['mail'] = isset($obj->mailbox) ?  $this->decodeMimeString( $obj->mailbox  ) : '' ;
+        $return['mail'] .= (isset( $obj->host) && $obj->host != 'unspecified-domain' && $obj->host != '.SYNTAX-ERROR.'  ) ? '@'. $obj->host : '';
+        $return['name'] = ( isset( $obj->personal ) && trim($obj->personal) !== '' ) ? $this->decodeMimeString($obj->personal) : '' ;
+        return $return;
+    }
 
+    function formatMailObjects( Array $objs)
+    {
+        $return = array();
+
+        foreach($objs as $obj)
+            $return[] = $this->formatMailObject($obj);
+
+        return $return;
+    }
+
+    function body( $message , $options = FT_PEEK )
+    {
+       return imap_body( $this->mbox, $message  , $options  );
+    }
+
+    function fetchheader( $message , $options = 0 )
+    {
+        return imap_fetchheader( $this->mbox, $message  , $options  );
+    }
 }
