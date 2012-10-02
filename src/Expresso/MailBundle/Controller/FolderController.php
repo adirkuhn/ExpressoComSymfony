@@ -17,10 +17,10 @@ class FolderController extends Controller
         foreach($folders as $i => $folder)
         {
             $iFolder = array();
-            $iFolder['id'] = mb_convert_encoding(substr($folder->name,(strpos($folder->name , '}') + 1)) , 'UTF-8' , 'UTF7-IMAP' ) ;
-            $explodeName = explode( $folder->delimiter , $iFolder['id']);
+            $iFolder['id'] = mb_convert_encoding( str_replace( $folder->delimiter , '.', substr($folder->name,(strpos($folder->name , '}') + 1))) , 'UTF-8' , 'UTF7-IMAP' ) ;
+            $explodeName = explode( '.' , $iFolder['id']);
             $iFolder['cn'] = array_pop($explodeName);
-            $iFolder['parentFolder'] = implode('/' , $explodeName);
+            $iFolder['parentFolder'] = implode('.' , $explodeName);
 
             $status = $imap->status(substr($folder->name,(strpos($folder->name , '}') + 1)));
             $iFolder['status']['Messages'] = $status->messages;

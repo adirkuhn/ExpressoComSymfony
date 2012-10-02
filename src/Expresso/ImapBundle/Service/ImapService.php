@@ -20,7 +20,7 @@ class ImapService
 
     public function openMailbox( $folder = 'INBOX' )
     {
-        $newFolder = mb_convert_encoding( str_replace('/' ,  $this->config['delimiter'] , $folder ) , 'UTF7-IMAP' , 'UTF-8');
+        $newFolder = mb_convert_encoding( str_replace( '.' ,  $this->config['delimiter'] , $folder ) , 'UTF7-IMAP' , 'UTF-8');
 
         if($newFolder ===  $this->mboxFolder && is_resource( $this->mbox ))
             return $this->mbox;
