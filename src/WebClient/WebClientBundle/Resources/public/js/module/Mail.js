@@ -47,46 +47,46 @@ oMail.prototype.load = function()
         var tree3 = new Array();
         for (var i=0; i<data.length; i++) {
             if (/^INBOX/.test(data[i].id)) {
-                if (!unorphanize(tree1, data[i])) {
+                if (!Module.unorphanize(tree1, data[i])) {
                     data[i].children = new Array();
                     tree1.push(data[i]);
                 }
             }
             else if (/^user/.test(data[i].id)) {
-                if (!unorphanize(tree2, data[i])) {
+                if (!Module.unorphanize(tree2, data[i])) {
                     data[i].children = new Array();
                     tree2.push(data[i]);
                 }
             }
             else if (/^local_messages/.test(data[i].id)) {
-                if (!unorphanize(tree3, data[i])) {
+                if (!Module.unorphanize(tree3, data[i])) {
                     data[i].children = new Array();
                     tree3.push(data[i]);
                 }
             }
         }
         for(var i =0; i<tree1.length; i++){
-            count_unseen_children(tree1[i]);
+            Module.countUnseenChildren(tree1[i]);
         }
         for(var i =0; i<tree2.length; i++){
-            count_unseen_children(tree2[i]);
+            Module.countUnseenChildren(tree2[i]);
         }
         for(var i =0; i<tree3.length; i++){
-            count_unseen_children(tree3[i]);
+            Module.countUnseenChildren(tree3[i]);
         }
         var html = API.render("Mail/Folder", {folders: [tree1, tree2, tree3]});
         $('.imap-folders').append(html).children().treeview({
             animated: "fast"
         }).find(".folder:not(.head_folder)").unbind("click").click(function(){
             $(".mainfoldertree .folder.selected-folder").removeClass("selected-folder");
-            $(this).addClass("selected-folder");
+            $(Module).addClass("selected-folder");
         });
 
         $('[id="INBOX"] .folder:first').addClass("selected-folder");
     });
 }
 
-function unorphanize(root, element) {
+oMail.prototype.unorphanize = function(root, element) {
     var ok = false;
     var f = 0;
     for (var i=0; i<root.length; i++) {
@@ -94,18 +94,18 @@ function unorphanize(root, element) {
             element.children = new Array(); 
             root[i].children.push(element);
             return true;
-        } else if (ok = unorphanize(root[i].children, element)) {
+        } else if (ok = Module.unorphanize(root[i].children, element)) {
             break;
         }
     }
     return ok;
 }
 
-function count_unseen_children(folder){
+oMail.prototype.countUnseenChildren = function(folder){
     if(folder.children.length){
         for(var i=0; i< folder.children.length; i++){
             if(folder.children[i].children.length)
-                folder.children[i]['children_unseen'] = (folder.children[i]['children_unseen'] ? folder.children[i]['children_unseen'] : 0) + count_unseen_children(folder.children[i]);
+                folder.children[i]['children_unseen'] = (folder.children[i]['children_unseen'] ? folder.children[i]['children_unseen'] : 0) + Module.countUnseenChildren(folder.children[i]);
             
             folder['children_unseen'] = (folder['children_unseen'] ? folder['children_unseen'] : 0)+ (folder.children[i]['children_unseen'] ? folder.children[i]['children_unseen'] : 0) + parseInt(folder.children[i].status.Unseen);            
         }
