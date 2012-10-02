@@ -4,6 +4,24 @@ REST_Mail_ListFolders:
     requirements:
             _method:  GET
 
+REST_Mail_createFolder:
+    pattern:  /Folder
+    defaults: { _controller: MailBundle:Folder:createFolder }
+    requirements:
+            _method:  POST
+
+REST_Mail_editFolder:
+    pattern:  /Folder/{folder}
+    defaults: { _controller: MailBundle:Folder:editFolder }
+    requirements:
+            _method:  PUT
+
+REST_Mail_deleteFolder:
+    pattern:  /Folder/{folder}
+    defaults: { _controller: MailBundle:Folder:deleteFolder }
+    requirements:
+            _method:  DELETE
+
 REST_Mail_ListMessages_Folder:
     pattern:  /ListMessages/Folder/{folder}
     defaults: { _controller: MailBundle:Message:ListMessages }
