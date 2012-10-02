@@ -87,6 +87,20 @@ class ImapService
         return imap_sort( $this->mbox , $criteria , $reverse , $options , $searchCriteria , $charset);
     }
 
+    public function createFolder($folder){
+        $folder = mb_convert_encoding( str_replace( '.' ,  $this->config['delimiter'] , $folder ) , 'UTF7-IMAP' , 'UTF-8');
+        return imap_createmailbox($this->mbox, '{'.$this->config['host'].":".$this->config['port'].$this->config['options'].'}'.$folder);
+    }
 
+    public function editFolder($folder, $newFolder){
+        $folder = mb_convert_encoding( str_replace( '.' ,  $this->config['delimiter'] , $folder ) , 'UTF7-IMAP' , 'UTF-8');
+        $newFolder = mb_convert_encoding( str_replace( '.' ,  $this->config['delimiter'] , $newFolder ) , 'UTF7-IMAP' , 'UTF-8');
+        $mailboxPath =  '{'.$this->config['host'].":".$this->config['port'].$this->config['options'].'}';
+        return imap_renamemailbox($this->mbox, $mailboxPath.$folder, $mailboxPath.$newFolder);
+    }
 
+    public function deleteFolder($folder){
+        $folder = mb_convert_encoding( str_replace( '.' ,  $this->config['delimiter'] , $folder ) , 'UTF7-IMAP' , 'UTF-8');
+        return imap_deletemailbox($this->mbox, '{'.$this->config['host'].":".$this->config['port'].$this->config['options'].'}'.$folder);
+    }
 }
