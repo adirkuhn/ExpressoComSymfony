@@ -20,7 +20,7 @@ class ImapService
 
     public function openMailbox( $folder = 'INBOX' )
     {
-        $newFolder = mb_convert_encoding($folder, 'UTF7-IMAP' , 'UTF-8');
+        $newFolder = mb_convert_encoding( str_replace('/' ,  $this->config['delimiter'] , $folder ) , 'UTF7-IMAP' , 'UTF-8');
 
         if($newFolder ===  $this->mboxFolder && is_resource( $this->mbox ))
             return $this->mbox;
@@ -82,6 +82,10 @@ class ImapService
         return imap_status( $this->mbox , '{'.$this->config['host'].":".$this->config['port'].$this->config['options'].'}'.$folder , $options );
     }
 
+    public function sort ( $criteria = SORTDATE , $reverse = 0 , $options = SE_UID , $searchCriteria = NULL , $charset = 'UTF-8')
+    {
+        return imap_sort( $this->mbox , $criteria , $reverse , $options , $searchCriteria , $charset);
+    }
 
 
 

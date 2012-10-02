@@ -1,3 +1,23 @@
 REST_Mail_ListFolders:
     pattern:  /ListFolders
     defaults: { _controller: MailBundle:Folder:ListFolders }
+    requirements:
+            _method:  GET
+
+REST_Mail_ListMessages_Folder:
+    pattern:  /ListMessages/Folder/{folder}
+    defaults: { _controller: MailBundle:Message:ListMessages }
+    requirements:
+            _method:  GET
+
+REST_Mail_ListMessages_Folder_Limit:
+    pattern:  /ListMessages/Folder/{folder}/Limit/{limit}
+    defaults: { _controller: MailBundle:Message:ListMessages }
+    requirements:
+            _method:  GET
+
+REST_Mail_ListMessages_Folder_Limit_Offset:
+    pattern:  /ListMessages/Folder/{folder}/Limit/{limit}/Offset/{offset}
+    defaults: { _controller: MailBundle:Message:ListMessages }
+    requirements:
+            _method:  GET

@@ -47,13 +47,6 @@ class FolderController extends Controller
             }
         }
 
-        ;
-
-        ob_start();
-        print_r( $newReturn);
-        $output = ob_get_clean();
-        file_put_contents( "/tmp/prototype.log",  $output , FILE_APPEND);
-
         $response = new Response( json_encode( array_merge ($newReturn , $return) ) );
         $response->headers->set('Content-Type', 'application/json');
         return $response;
