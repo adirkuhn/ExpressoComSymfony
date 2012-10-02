@@ -28,10 +28,26 @@
             var API = new oAPI( "{{ asset('') }}app_dev.php" ,  "{{ asset('bundles/webclient') }}" );
         </script>
         <script src="{{ asset('bundles/webclient/js/login.js') }}" type="text/javascript" ></script>
+        <link href="{{ asset('bundles/webclient/css/login.css') }}" rel="stylesheet" type="text/css" />
 	</head>
 
-    <body style="background : url({{ asset('bundles/webclient/images/logo-home.jpeg') }}) no-repeat;">    
-
+    {#<body style="background : url({{ asset('bundles/webclient/images/logo-home.jpeg') }}) no-repeat;">    #}
+    <body style="background-image:url({{asset('bundles/webclient/images/degrade.png')}});background-repeat:repeat-x;">
+    	<div class="image-background1 image-background">
+    		<a href="http://www1.caixa.gov.br/loterias/seja_empresario_loterico/index.asp" target="_blank">
+    			<img src="{{asset('bundles/webclient/images/fundop1.png')}}">
+    		</a>
+    	</div>
+    	<div class="image-background2 image-background">
+    		<a href="http://www1.caixa.gov.br/atendimento/como_ser_correspondente_bancario.asp" target="_blank">
+    			<img src="{{asset('bundles/webclient/images/fundop2.png')}}">
+    		</a>
+    	</div>
+    	<div class="image-background3 image-background">
+    		<a href="http://www1.caixa.gov.br/loterias/index.asp" target="_blank">
+    			<img src="{{asset('bundles/webclient/images/fundop3.png')}}">
+    		</a>
+    	</div>
 	</body>
 </html>
 

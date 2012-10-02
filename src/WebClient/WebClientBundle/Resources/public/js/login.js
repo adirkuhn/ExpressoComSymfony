@@ -29,7 +29,7 @@ oLogin.prototype.load = function(){
            $(this).parents(".ui-dialog").find("form").submit();
         }
     });
-    login.parents(".ui-dialog").css({"left": "75%", "top": "30%", "border-radius":"5px"});
+    login.parents(".ui-dialog").css({"left": "25%", "top": "20%", "border-radius":"5px"});
 }
 
 var Login = new oLogin();

@@ -1,3 +1,25 @@
 .login-dialog {
     border-radius:5px;
 }
+
+body { 
+	background-image:url(degrade.png);background-repeat:repeat-x; 
+}
+
+.image-background{
+	position: absolute;
+	left : 70%;
+}
+
+.image-background1{
+	top: 3%;
+}
+
+.image-background2{
+	top: 18%;
+}
+
+.image-background3{
+	top:38%;
+}
+
