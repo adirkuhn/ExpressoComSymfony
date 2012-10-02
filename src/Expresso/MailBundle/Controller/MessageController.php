@@ -31,7 +31,7 @@ class MessageController extends Controller
         {
             $mailObject = $imap->headerInfo($UID);
             $mimeBody = $imap->body( $UID );
-            $mimeHeader = $imap->fetchheader( $UID );
+            $mimeHeader = $imap->fetchHeader( $UID );
 
             $return[$i]['id'] = $mailObject->Msgno;
             $return[$i]['flags']['Recent'] = $mailObject->Recent == 'R' ? true : false;
