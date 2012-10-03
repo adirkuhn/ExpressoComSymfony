@@ -28,6 +28,12 @@ REST_Mail_ListMessages_Folder:
     requirements:
             _method:  GET
 
+REST_Mail_ListMessages_JqGridFolder:
+    pattern:  /jqGridListMessages/Folder/{folder}
+    defaults: { _controller: MailBundle:Message:jqGridListMessages }
+    requirements:
+            _method:  GET
+
 REST_Mail_ListMessages_Folder_Sort:
     pattern:  /ListMessages/Folder/{folder}/Sort/{sort}
     defaults: { _controller: MailBundle:Message:ListMessages }

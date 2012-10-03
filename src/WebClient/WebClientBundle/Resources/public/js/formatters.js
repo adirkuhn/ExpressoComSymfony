@@ -36,26 +36,44 @@ numberMonths = function(months){
 }
 
 date2Time = function (timestamp) {
-	date = new Date();
-	dat = new Date(timestamp);
-	if ((date.getTime() - timestamp) < (24*60*60*1000)) {
-		return '<span class="timable" title="'+dat.getTime()+'"></span>';
-	} else {
-		date = new Date(timestamp);
-		var b = date.toString("dd/MM/yyyy");
-		return '<span class="datable">' + b + '</span>';
-	}
+    date = new Date();
+    timestamp *= 1000;
+    dat = new Date(timestamp);
+    if ((date.getTime() - timestamp) < (24*60*60*1000)) {
+        return '<span class="timable" title="'+dat.getTime()+'"></span>';
+    } else {
+        var b = dat.toISOString().split("T")[0].split("-");
+        var c = b[2] + "/" + b[1] + "/" + b[0];
+        return '<span class="datable">' + c + '</span>';
+    }
 }
 
 subjectFormatter = function(subject){
-    var formatted = subject ?
+    var formatted = $.trim(subject) != "" ?
         (subject.length > 40 ? subject.substring(0, 37)+"..." : subject) :
-        "(Rascunho)";
+        "(Sem assunto)";
     return '<span>' + formatted + '</span>';
 }
 
+fromFormatter = function(from){
+    if(from.length){
+        if($.trim(from[0].name) != ""){
+            return '<span>' + (from[0].name.length > 40 ?  from[0].name.substring(0, 37)+"..." : from[0].name) + '</span>';    
+        }else if($.trim(from[0].mail) != ""){
+            return '<span>' + (from[0].mail.length > 40 ?  from[0].mail.substring(0, 37)+"..." : from[0].mail) + '</span>';    
+        }    
+    }
+    else{
+        return '<span>(Rascunho)</span>';
+    }    
+}
+
+
 flags2Class = function(cellvalue, options, rowObject) {
-    var classes = '';
+    //console.log(rowObject);
+    //console.log(cellvalue);
+    //console.log(options);
+    /*var classes = '';
     cellvalue = cellvalue.split(',');
     cell = {
         Unseen: parseInt(cellvalue[0])  ? 'Unseen' : 'Seen',
@@ -66,7 +84,7 @@ flags2Class = function(cellvalue, options, rowObject) {
     };
     for(var flag in cell){
         classes += '<span class="flags '+ (cell[flag]).toLowerCase() + '"' + (cell[flag] != "" ? 'title="'+ cell[flag]+'"' : '')+'> </span>';
-    }
+    }*/
 
     // REFAZER LABELS E ACOMPANHAMENTO
     /*if(rowObject.labels){
@@ -96,5 +114,5 @@ flags2Class = function(cellvalue, options, rowObject) {
 
     }*/
 
-    return classes;
+    return "flags";
 }

@@ -85,3 +85,7 @@ ul.mainfoldertree .folder.selected-folder{
 ul.mainfoldertree .folder{
 	color:black;
 }
+
+.ui-jqgrid .ui-pg-input{
+	height: 20px;
+}

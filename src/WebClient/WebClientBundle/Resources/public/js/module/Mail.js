@@ -19,28 +19,7 @@ oMail.prototype.load = function()
         scrollable: true,
         sortable: true
     });
-    /*
-    $("#imap-folder-table-messages").jqGrid({
-    	data : [],
-    	datatype: "local",
-    	colNames:['#',' ', 'De', 'Assunto', 'Data', 'Tamanho'],
-        colModel:[
-            {name:'msg_number',index:'msg_number', width:45, hidden:true, sortable:false},
-            {name:'flags',index:'msg_number',edittype: 'image', width:60, formatter:flags2Class, sortable:false, title :false},
-            {name:'from.name',index:'SORTFROM', width:100, sortable:true, formatter:subjectFormatter},
-            {name:'subject',index:'SORTSUBJECT', width:245, sortable:true},
-            {name:'timestamp',index:'SORTARRIVAL', width:65, align:"center", sortable:true, formatter: date2Time},
-            {name:'size',index:'SORTSIZE', width:55, align:"center", sortable:true, formatter: bytes2Size}
-        ],
-        rowNum:50,
-        rowList:[10,25,50],
-        pager: "#imap-folder-table-pager",
-        sortorder: "desc",
-        multiselect: true,
-        autowidth: true,
-        height : '100%'
-    });
-    */
+    
     API.restGET("Mail/ListFolders", function(data){
         var tree1 = new Array();
         var tree2 = new Array();
@@ -79,11 +58,53 @@ oMail.prototype.load = function()
             animated: "fast"
         }).find(".folder:not(.head_folder)").unbind("click").click(function(){
             $(".mainfoldertree .folder.selected-folder").removeClass("selected-folder");
-            $(Module).addClass("selected-folder");
+            $(this).addClass("selected-folder");
         });
 
         $('[id="INBOX"] .folder:first').addClass("selected-folder");
     });
+
+    $("#imap-folder-table-messages").jqGrid({
+        url : API.URL+"/rest/Mail/jqGridListMessages/Folder/INBOX",
+        datatype: "json",
+        mtype: 'GET',
+        colNames:['#',' ', 'De', 'Assunto', 'Data', 'Tamanho'],
+        colModel:[
+            {name:'id',index:'msg_number', width:45, hidden:true, sortable:false},
+            {name:'flags',index:'msg_number',edittype: 'image', width:60, formatter:flags2Class, sortable:false, title :false},
+            {name:'from',index:'SORTFROM', width:100, sortable:true, formatter:fromFormatter},
+            {name:'subject',index:'SORTSUBJECT', width:245, sortable:true, formatter:subjectFormatter},
+            {name:'udate',index:'SORTARRIVAL', width:65, align:"center", sortable:true, formatter: date2Time},
+            {name:'size',index:'SORTSIZE', width:55, align:"center", sortable:true, formatter: bytes2Size}
+        ],
+        rowNum:50,
+        jsonReader : {
+            root:"rows",
+            page: "page",
+            total: "total",
+            records: "records",
+            repeatitems: false,
+            id: "0"
+        },
+        rowList:[10,25,50],
+        pager: "#imap-folder-table-pager",
+        sortorder: "desc",
+        multiselect: true,
+        autowidth: true,
+        height : '100%',
+        loadComplete: function(data) {
+                // aplica o contador
+                jQuery('.timable').each(function (i) {
+                    jQuery(this).countdown({
+                        since: new Date(parseInt(this.title)), 
+                        significant: 1,
+                        layout: 'h&aacute; {d<}{dn} {dl} {d>}{h<}{hn} {hl} {h>}{m<}{mn} {ml} {m>}{s<}{sn} {sl}{s>}', 
+                        description: ' atr&aacute;s'
+                    });                 
+                });
+        }
+    });
+    
 }
 
 oMail.prototype.unorphanize = function(root, element) {
