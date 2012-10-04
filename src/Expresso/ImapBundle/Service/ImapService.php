@@ -87,7 +87,7 @@ class ImapService
     }
 
 
-    public function headerInfo ( $message , $SE_UID = false  )
+    public function headerInfo ( $message , $SE_UID = true  )
     {
         return imap_headerinfo( $this->mbox , $SE_UID ? imap_msgno( $this->mbox , $message ) : $message );
     }
@@ -111,12 +111,13 @@ class ImapService
         return $return;
     }
 
-    function body( $message , $options = FT_PEEK )
+    function body( $message , $options = false )
     {
-       return imap_body( $this->mbox, $message  , $options  );
+       $options = ($options == false)  ? FT_UID|FT_PEEK : $options;
+       return imap_body( $this->mbox, $message  , $options );
     }
 
-    function fetchHeader( $message , $options = 0 )
+    function header( $message , $options = FT_UID )
     {
         return imap_fetchheader( $this->mbox, $message  , $options  );
     }

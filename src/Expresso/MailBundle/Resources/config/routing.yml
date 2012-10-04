@@ -45,3 +45,15 @@ REST_Mail_ListMessages_Folder_Sort_Limit_Offset:
     defaults: { _controller: MailBundle:Message:ListMessages }
     requirements:
             _method:  GET
+
+REST_Mail_InfoMessage:
+    pattern:  /InfoMessage/Folder/{folder}/UID/{msgUID}
+    defaults: { _controller: MailBundle:Message:InfoMessage }
+    requirements:
+            _method:  GET
+
+REST_Mail_DownloadAttachment:
+    pattern:  /DownloadAttachment/Folder/{folder}/UID/{msgUID}/IndexPart/{indexPart}
+    defaults: { _controller: MailBundle:Message:DownloadAttachment }
+    requirements:
+            _method:  GET

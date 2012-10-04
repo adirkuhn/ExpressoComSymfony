@@ -80,10 +80,6 @@ services:
         arguments: [@ExpressoLdap]
     Expresso.Ldap.login_handler:
         class: Expresso\LdapBundle\Handler\LoginHandler
-    #    arguments:  [@router, @security.context]
-    #Expresso.Ldap.logout_success_handler:
-    #    class:  Expresso\LdapBundle\Handler\LogoutHandler
-    #    arguments:  [@router, @security.context]
     ExpressoImap:
         class:  Expresso\ImapBundle\Service\ImapService
         arguments:
@@ -94,4 +90,9 @@ services:
                 delimiter: '/'
                 folders: [ "INBOX", "Drafts" , "Sent" , "Spam" , "Trash"]
             token: @security.context
+    ExpressoMailParser:
+        class:  Expresso\MailBundle\Service\MailParser
+#        arguments:
+#            @ExpressoImap
+
 

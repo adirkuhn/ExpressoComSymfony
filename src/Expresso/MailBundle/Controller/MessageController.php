@@ -3,6 +3,7 @@ namespace Expresso\MailBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+//use Ijanki\Bundle\MailMimeDecodeBundle\Util\MailParseDecode;
 
 class MessageController extends Controller
 {
@@ -21,7 +22,7 @@ class MessageController extends Controller
         else
             $sort = defined(constant($sort)) ? constant($sort) :  SORTDATE ;
 
-        $mails = $imap->sort( $sort , $reverse , 0 );
+        $mails = $imap->sort( $sort , $reverse , SE_UID  );
 
         if($limit !== 0)
             $mails = array_slice($mails, $offset , $limit );
@@ -31,9 +32,9 @@ class MessageController extends Controller
         {
             $mailObject = $imap->headerInfo($UID);
             $mimeBody = $imap->body( $UID );
-            $mimeHeader = $imap->fetchHeader( $UID );
+            $mimeHeader = $imap->header( $UID );
 
-            $return[$i]['id'] = $mailObject->Msgno;
+            $return[$i]['id'] = $UID;
             $return[$i]['flags']['Recent'] = $mailObject->Recent == 'R' ? true : false;
             $return[$i]['flags']['Unseen'] = $mailObject->Unseen == 'U' ? true : false;
             $return[$i]['flags']['Flagged'] = $mailObject->Flagged == 'F' ? true : false;
@@ -56,4 +57,54 @@ class MessageController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
+    public function InfoMessageAction( $folder , $msgUID )
+    {
+        $imap = $this->get('ExpressoImap');
+        $imap->openMailbox($folder);
+
+        $parser = $this->get('ExpressoMailParser');
+        $parser->setRawMail(str_replace("\r\n\t", '', $imap->header($msgUID ))."\r\n".$imap->body($msgUID ));
+        $body = $parser->parseBody();
+
+
+//TODO:Implementar
+//        foreach ($parser->getEmbeddedImagesInfo() as $image)
+//        {
+//            $image['cid'] = preg_replace('/</i', '', $image['cid']);
+//            $image['cid'] = preg_replace('/>/i', '', $image['cid']);
+//
+//            $body = str_replace("src=\"cid:".$image['cid']."\"", " src=\"./inc/get_archive.php?msgFolder=$folder&msgNumber=$msgUID&indexPart=".$image['pid']."\" ", $body);
+//            $body = str_replace("src='cid:".$image['cid']."'", " src=\"./inc/get_archive.php?msgFolder=$folder&msgNumber=$msgUID&indexPart=".$image['pid']."\"", $body);
+//            $body = str_replace("src=cid:".$image['cid'], " src=\"./inc/get_archive.php?msgFolder=$folder&msgNumber=$msgUID&indexPart=".$image['pid']."\"", $body);
+//        }
+
+
+        $return['body'] = $body;
+        $response = new Response( json_encode( $parser->getAttachmentsInfo() ) );
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    public function DownloadAttachmentAction( $folder , $msgUID , $indexPart)
+    {
+        $imap = $this->get('ExpressoImap');
+        $parser = $this->get('ExpressoMailParser');
+
+        $imap->openMailbox($folder);
+        $parser->setRawMail(str_replace("\r\n\t", '', $imap->header($msgUID ))."\r\n".$imap->body($msgUID ));
+        $info = $parser->getAttachmentInfo($indexPart);
+
+        $response = new Response(  $parser->getAttachment($indexPart) );
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Content-Disposition', 'attachment; filename="'.$info['name'].'" ');
+        $response->headers->set('Content-Length', $info['fsize']);
+        if( isset($info["encoding"]) )
+            $response->headers->set('Content-transfer-encoding', $info["encoding"] );;
+
+        return $response;
+    }
+
 }
