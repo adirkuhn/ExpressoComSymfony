@@ -105,7 +105,6 @@ class MessageController extends Controller
 
         $parser = $this->get('ExpressoMailParser');
         $parser->setRawMail(str_replace("\r\n\t", '', $imap->header($msgUID ))."\r\n".$imap->body($msgUID ));
-        $body = $parser->parseBody();
 
 //TODO:Implementardsfds
 //        foreach ($parser->getEmbeddedImagesInfo() as $image)
@@ -118,9 +117,12 @@ class MessageController extends Controller
 //            $body = str_replace("src=cid:".$image['cid'], " src=\"./inc/get_archive.php?msgFolder=$folder&msgNumber=$msgUID&indexPart=".$image['pid']."\"", $body);
 //        }
 
+        $header = $this->getListMessages($imap , array($msgUID));
+        $return = $header[0];
 
-        $return['body'] = $body;
-        $response = new Response( json_encode( $parser->getAttachmentsInfo() ) );
+        $return['body'] = $parser->parseBody();
+        $return['attachment'] = $parser->getAttachmentsInfo();
+        $response = new Response( json_encode( $return ) );
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
