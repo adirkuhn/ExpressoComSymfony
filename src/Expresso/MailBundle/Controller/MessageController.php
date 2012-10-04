@@ -67,8 +67,7 @@ class MessageController extends Controller
         $parser->setRawMail(str_replace("\r\n\t", '', $imap->header($msgUID ))."\r\n".$imap->body($msgUID ));
         $body = $parser->parseBody();
 
-
-//TODO:Implementar
+//TODO:Implementardsfds
 //        foreach ($parser->getEmbeddedImagesInfo() as $image)
 //        {
 //            $image['cid'] = preg_replace('/</i', '', $image['cid']);
