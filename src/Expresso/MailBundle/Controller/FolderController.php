@@ -7,11 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FolderController extends Controller
 {
-    public function ListFoldersAction()
+    public function ListFoldersAction($folder = 'INBOX')
     {
 
         $imap = $this->get('ExpressoImap');
-        $imap->openMailbox();
+        $imap->openMailbox($folder);
         $folders =  $imap->getMailBoxes();
 
         $return = array();
@@ -21,7 +21,7 @@ class FolderController extends Controller
             $iFolder['id'] = mb_convert_encoding( str_replace( $folder->delimiter , '.', substr($folder->name,(strpos($folder->name , '}') + 1))) , 'UTF-8' , 'UTF7-IMAP' ) ;
             $explodeName = explode( '.' , $iFolder['id']);
             $iFolder['cn'] = array_pop($explodeName);
-            $iFolder['parentFolder'] = implode('.' , $explodeName);
+            $iFolder['parentFolder'] = implode('.' , $explodeName) == 'INBOX' ? '' : implode('.' , $explodeName);
 
             $status = $imap->status(substr($folder->name,(strpos($folder->name , '}') + 1)));
             $iFolder['status']['Messages'] = $status->messages;
@@ -69,7 +69,6 @@ class FolderController extends Controller
     }
 
     public function editFolderAction($folder){
-        $request = Request::createFromGlobals();
         $imap = $this->get('ExpressoImap');
         $imap->openMailbox();
 
@@ -88,6 +87,19 @@ class FolderController extends Controller
     }
 
     public function deleteFolderAction($folder){
+        $imap = $this->get('ExpressoImap');
+        $imap->openMailbox();
+        $response = new Response();
+        if($imap->deleteFolder($folder)){
+            $response->setStatusCode(204);
+        }else{
+            $response->setContent($this->get('translator')->trans(imap_last_error()));
+            $response->setStatusCode(500);
+        }
+        return $response;
+    }
+
+    public function getFolderAction($folder){
         $request = Request::createFromGlobals();
         $imap = $this->get('ExpressoImap');
         $imap->openMailbox();

@@ -58,11 +58,28 @@ oMail.prototype.load = function()
             animated: "fast"
         }).find(".folder:not(.head_folder)").unbind("click").click(function(){
             $(".mainfoldertree .folder.selected-folder").removeClass("selected-folder");
+            Module.changeFolder($(this).parent().attr("id"));
             $(this).addClass("selected-folder");
         });
 
         $('[id="INBOX"] .folder:first').addClass("selected-folder");
     });
+    
+    var clearMarkersOnGrid = function (){
+        $("#imap-folder-table-messages").jqGrid('setGridWidth', $("#tabs-0").width()).trigger("reloadGrid");
+    };
+
+    var clearGridTimer = "";
+
+    var resize = function() {
+        if (clearGridTimer) {
+            window.clearTimeout(clearGridTimer);
+        }
+        clearGridTimer = window.setTimeout(clearMarkersOnGrid, 200);
+    };
+
+    $(window).resize(resize);
+    $("#main ui-layout-center").resize(resize);
 
     $("#imap-folder-table-messages").jqGrid({
         url : API.URL+"/rest/Mail/jqGridListMessages/Folder/INBOX",
@@ -104,6 +121,12 @@ oMail.prototype.load = function()
                 });
         }
     });
+    API.restGET("Mail/Folder/INBOX", function(data){
+        var tab = $("#tabs li:first");
+        tab.find(".folder-tab-name").html(data[0].cn);
+        tab.find(".folder-tab-new-msgs-number").html(data[0].status.Unseen);
+        tab.find(".folder-tab-total-msgs-number").html(data[0].status.Messages);
+    });
     
 }
 
@@ -136,10 +159,20 @@ oMail.prototype.countUnseenChildren = function(folder){
     }
 }
 
+oMail.prototype.changeFolder = function(folder){
+    $("#imap-folder-table-messages").jqGrid('setGridParam', {url : API.URL+"/rest/Mail/jqGridListMessages/Folder/"+folder}).trigger("reloadGrid");
+    API.restGET("Mail/Folder/"+folder, function(data){
+        var tab = $("#tabs li:first");
+        tab.find(".folder-tab-name").html(data[0].cn);
+        tab.find(".folder-tab-new-msgs-number").html(data[0].status.Unseen);
+        tab.find(".folder-tab-total-msgs-number").html(data[0].status.Messages);
+    });
+}
 
 oMail.prototype.destroy = function()
 {
     $('#main').empty();
+    $(window).unbind("resize");
     return true;
 }
 

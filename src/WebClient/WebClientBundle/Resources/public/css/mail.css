@@ -89,3 +89,49 @@ ul.mainfoldertree .folder{
 .ui-jqgrid .ui-pg-input{
 	height: 20px;
 }
+
+.flags{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+}
+
+.flags.seen{
+	background-image: url(../images/seen.gif);
+	background-repeat: no-repeat;
+}
+
+.flags.unseen{
+	background-image: url(../images/unseen.gif);
+	background-repeat: no-repeat;
+}
+
+.flags.recent{
+	background-image: url(../images/new.png);
+	background-repeat: no-repeat;
+}
+
+.flags.important{
+	background-image: url(../images/important.png);
+	background-repeat: no-repeat;
+}
+
+.flags.reply{
+	background-image: url(../images/answered.png);
+	background-repeat: no-repeat;
+}
+
+.flags.forward{
+	background-image: url(../images/forwarded.png);
+	background-repeat: no-repeat;
+}
+
+.flags.draft{
+	background-image: url(../images/draft.png);
+	background-repeat: no-repeat;
+}
+
+.flags.attachment{
+	background-image: url(../images/clip.gif);
+	background-repeat: no-repeat;
+}

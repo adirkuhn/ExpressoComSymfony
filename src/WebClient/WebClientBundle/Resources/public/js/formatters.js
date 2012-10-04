@@ -70,49 +70,25 @@ fromFormatter = function(from){
 
 
 flags2Class = function(cellvalue, options, rowObject) {
-    //console.log(rowObject);
-    //console.log(cellvalue);
-    //console.log(options);
-    /*var classes = '';
-    cellvalue = cellvalue.split(',');
-    cell = {
-        Unseen: parseInt(cellvalue[0])  ? 'Unseen' : 'Seen',
-        Answered: parseInt(cellvalue[1]) ? 'Answered' : (parseInt(cellvalue[2]) ? 'Forwarded' : ''),
-        Flagged: parseInt(cellvalue[3]) ? 'Flagged' : '',
-        Recent: parseInt(cellvalue[4])  ? 'Recent' : '',
-        Draft: parseInt(cellvalue[5]) ? 'Draft' : ''
+    var flags = {
+        Answered : "reply",
+        Attachment: "attachment",
+        //Flagged : "forward",
+        Draft: "draft",
+        Importance:"important",
+        Recent: "recent",
+        Unseen: "unseen"
     };
-    for(var flag in cell){
-        classes += '<span class="flags '+ (cell[flag]).toLowerCase() + '"' + (cell[flag] != "" ? 'title="'+ cell[flag]+'"' : '')+'> </span>';
-    }*/
-
-    // REFAZER LABELS E ACOMPANHAMENTO
-    /*if(rowObject.labels){
-        var titles = [];
-        var count = 0;
-        for(i in rowObject.labels){
-            titles[count] = " "+rowObject.labels[i].name;
-            count++;
-        }
-        titles = titles.join();
-        classes += '<span class="flags labeled" title="'+titles+'"> </span>';
-    }else{
-        classes += '<span class="flags"> </span>';
+    console.log(cellvalue);
+    var classes = '<span class="flags '+ (!cellvalue.Unseen ? "seen" : "unseen") +'"></span>';
+    classes += '<span class="flags '+ (cellvalue.Attachment ? "attachment" : "") +'"></span>';
+    if(cellvalue.Answered && cellvalue.Draft){
+        classes += '<span class="flags forward"></span>';      
     }
 
-    if(rowObject.followupflagged){
-        if(rowObject.followupflagged.followupflag.id < 7){
-            var nameFollowupflag = get_lang(rowObject.followupflagged.followupflag.name);
-        }else{
-            var nameFollowupflag = rowObject.followupflagged.followupflag.name;
-        }
-        if(rowObject.followupflagged.isDone == 1){
-            classes += '<span class="flags followupflagged" title="'+nameFollowupflag+'" style="background:'+rowObject.followupflagged.backgroundColor+';"><img style=" margin-left:-3px;" src="../prototype/modules/mail/img/flagChecked.png"></span>';
-        }else{
-            classes += '<span class="flags followupflagged" title="'+nameFollowupflag+'" style="background:'+rowObject.followupflagged.backgroundColor+';"><img src="../prototype/modules/mail/img/flagEditor.png"></span>';
-        }
-
-    }*/
-
-    return "flags";
+    for(var i in cellvalue){
+        if(i != "Unseen" && i != "Attachment")
+            classes += '<span class="flags '+(cellvalue[i] ? flags[i] : "")+'"></span>';
+    }
+    return classes;
 }

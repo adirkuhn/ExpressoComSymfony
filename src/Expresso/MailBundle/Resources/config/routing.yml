@@ -4,6 +4,12 @@ REST_Mail_ListFolders:
     requirements:
             _method:  GET
 
+REST_Mail_getFolder:
+    pattern:  /Folder/{folder}
+    defaults: { _controller: MailBundle:Folder:ListFolders }
+    requirements:
+            _method:  GET
+
 REST_Mail_createFolder:
     pattern:  /Folder
     defaults: { _controller: MailBundle:Folder:createFolder }

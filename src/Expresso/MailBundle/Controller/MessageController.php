@@ -64,7 +64,6 @@ class MessageController extends Controller
         $response = new Response( json_encode( $return ) );
         $response->headers->set('Content-Type', 'application/json');
         return $response;
-
     }
 
     private function getListMessages( &$imap , $mails )
@@ -77,13 +76,13 @@ class MessageController extends Controller
             $mimeHeader = $imap->fetchHeader( $UID );
 
             $return[$i]['id'] = $mailObject->Msgno;
-            $return[$i]['flags']['Recent'] = $mailObject->Recent == 'R' ? true : false;
+            $return[$i]['flags']['Recent'] = $mailObject->Recent == 'N' ? true : false;
             $return[$i]['flags']['Unseen'] = $mailObject->Unseen == 'U' ? true : false;
             $return[$i]['flags']['Flagged'] = $mailObject->Flagged == 'F' ? true : false;
             $return[$i]['flags']['Answered'] = $mailObject->Answered == 'A' ? true : false;
-            $return[$i]['flags']['Draft'] = $mailObject->Draft == 'D' ? true : false;
+            $return[$i]['flags']['Draft'] = $mailObject->Draft == 'X' ? true : false;
             $return[$i]['flags']['Attachment'] = ( preg_match('/((Content-Disposition:(.)*([\r\n\s]*filename))|(Content-Type:(.)*([\r\n\s]*name)))/i', $mimeBody) ) ? true : false;
-            $return[$i]['flags']['Importance'] = ( preg_match('/importance *: *(.*)\r/i', $mimeHeader , $importance) === 0 ) ? true : false;
+            $return[$i]['flags']['Importance'] = ( preg_match('/importance *: *(.*)\r/i', $mimeHeader , $importance) ) ? true : false;
             $return[$i]['subject'] = $imap->decodeMimeString($mailObject->subject);
             $return[$i]['to'] = (isset($mailObject->to) && is_array($mailObject->to) && count($mailObject->to) > 0) ? $imap->formatMailObjects($mailObject->to) : array();
             $return[$i]['from'] = (isset($mailObject->from) && is_array($mailObject->from) && count($mailObject->from) > 0) ? $imap->formatMailObjects($mailObject->from) : array();
