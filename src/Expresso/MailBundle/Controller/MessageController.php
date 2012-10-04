@@ -77,7 +77,7 @@ class MessageController extends Controller
             $mimeBody = $imap->body( $UID );
             $mimeHeader = $imap->header( $UID );
 
-            $return[$i]['id'] = $mailObject->Msgno;
+            $return[$i]['id'] = $UID;
             $return[$i]['flags']['Recent'] = $mailObject->Recent == 'R' ? true : false;
             $return[$i]['flags']['Unseen'] = $mailObject->Unseen == 'U' ? true : false;
             $return[$i]['flags']['Flagged'] = $mailObject->Flagged == 'F' ? true : false;

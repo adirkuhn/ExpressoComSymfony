@@ -169,6 +169,10 @@ oMail.prototype.changeFolder = function(folder){
     });
 }
 
+oMail.prototype.openMessage = function(id){
+    
+}
+
 oMail.prototype.destroy = function()
 {
     $('#main').empty();

@@ -79,7 +79,6 @@ flags2Class = function(cellvalue, options, rowObject) {
         Recent: "recent",
         Unseen: "unseen"
     };
-    console.log(cellvalue);
     var classes = '<span class="flags '+ (!cellvalue.Unseen ? "seen" : "unseen") +'"></span>';
     classes += '<span class="flags '+ (cellvalue.Attachment ? "attachment" : "") +'"></span>';
     if(cellvalue.Answered && cellvalue.Draft){

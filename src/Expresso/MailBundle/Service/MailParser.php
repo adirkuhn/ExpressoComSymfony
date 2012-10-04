@@ -153,7 +153,7 @@ class MailParser
        // $content = $this->processEmbeddedImages($msgUID,$content, $folder);
         $content = $this->replaceSpecialCharacters($content);
         $this->replaceLinks($content);
-        $return['body'] = &$content;
+        $return = &$content;
 
         return $return;
 
