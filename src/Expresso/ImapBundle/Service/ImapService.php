@@ -137,6 +137,5 @@ class ImapService
     public function deleteFolder($folder){
         $folder = mb_convert_encoding( str_replace( '.' ,  $this->config['delimiter'] , $folder ) , 'UTF7-IMAP' , 'UTF-8');
         return imap_deletemailbox($this->mbox, '{'.$this->config['host'].":".$this->config['port'].$this->config['options'].'}'.$folder);
-
     }
 }

@@ -4,6 +4,12 @@ REST_Mail_ListFolders:
     requirements:
             _method:  GET
 
+REST_Mail_getFolder:
+    pattern:  /Folder/{folder}
+    defaults: { _controller: MailBundle:Folder:ListFolders }
+    requirements:
+            _method:  GET
+
 REST_Mail_createFolder:
     pattern:  /Folder
     defaults: { _controller: MailBundle:Folder:createFolder }
@@ -25,6 +31,12 @@ REST_Mail_deleteFolder:
 REST_Mail_ListMessages_Folder:
     pattern:  /ListMessages/Folder/{folder}
     defaults: { _controller: MailBundle:Message:ListMessages }
+    requirements:
+            _method:  GET
+
+REST_Mail_ListMessages_JqGridFolder:
+    pattern:  /jqGridListMessages/Folder/{folder}
+    defaults: { _controller: MailBundle:Message:jqGridListMessages }
     requirements:
             _method:  GET
 

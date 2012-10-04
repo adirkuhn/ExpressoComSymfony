@@ -36,65 +36,59 @@ numberMonths = function(months){
 }
 
 date2Time = function (timestamp) {
-	date = new Date();
-	dat = new Date(timestamp);
-	if ((date.getTime() - timestamp) < (24*60*60*1000)) {
-		return '<span class="timable" title="'+dat.getTime()+'"></span>';
-	} else {
-		date = new Date(timestamp);
-		var b = date.toString("dd/MM/yyyy");
-		return '<span class="datable">' + b + '</span>';
-	}
+    date = new Date();
+    timestamp *= 1000;
+    dat = new Date(timestamp);
+    if ((date.getTime() - timestamp) < (24*60*60*1000)) {
+        return '<span class="timable" title="'+dat.getTime()+'"></span>';
+    } else {
+        var b = dat.toISOString().split("T")[0].split("-");
+        var c = b[2] + "/" + b[1] + "/" + b[0];
+        return '<span class="datable">' + c + '</span>';
+    }
 }
 
 subjectFormatter = function(subject){
-    var formatted = subject ?
+    var formatted = $.trim(subject) != "" ?
         (subject.length > 40 ? subject.substring(0, 37)+"..." : subject) :
-        "(Rascunho)";
+        "(Sem assunto)";
     return '<span>' + formatted + '</span>';
 }
 
+fromFormatter = function(from){
+    if(from.length){
+        if($.trim(from[0].name) != ""){
+            return '<span>' + (from[0].name.length > 40 ?  from[0].name.substring(0, 37)+"..." : from[0].name) + '</span>';    
+        }else if($.trim(from[0].mail) != ""){
+            return '<span>' + (from[0].mail.length > 40 ?  from[0].mail.substring(0, 37)+"..." : from[0].mail) + '</span>';    
+        }    
+    }
+    else{
+        return '<span>(Rascunho)</span>';
+    }    
+}
+
+
 flags2Class = function(cellvalue, options, rowObject) {
-    var classes = '';
-    cellvalue = cellvalue.split(',');
-    cell = {
-        Unseen: parseInt(cellvalue[0])  ? 'Unseen' : 'Seen',
-        Answered: parseInt(cellvalue[1]) ? 'Answered' : (parseInt(cellvalue[2]) ? 'Forwarded' : ''),
-        Flagged: parseInt(cellvalue[3]) ? 'Flagged' : '',
-        Recent: parseInt(cellvalue[4])  ? 'Recent' : '',
-        Draft: parseInt(cellvalue[5]) ? 'Draft' : ''
+    var flags = {
+        Answered : "reply",
+        Attachment: "attachment",
+        //Flagged : "forward",
+        Draft: "draft",
+        Importance:"important",
+        Recent: "recent",
+        Unseen: "unseen"
     };
-    for(var flag in cell){
-        classes += '<span class="flags '+ (cell[flag]).toLowerCase() + '"' + (cell[flag] != "" ? 'title="'+ cell[flag]+'"' : '')+'> </span>';
+    console.log(cellvalue);
+    var classes = '<span class="flags '+ (!cellvalue.Unseen ? "seen" : "unseen") +'"></span>';
+    classes += '<span class="flags '+ (cellvalue.Attachment ? "attachment" : "") +'"></span>';
+    if(cellvalue.Answered && cellvalue.Draft){
+        classes += '<span class="flags forward"></span>';      
     }
 
-    // REFAZER LABELS E ACOMPANHAMENTO
-    /*if(rowObject.labels){
-        var titles = [];
-        var count = 0;
-        for(i in rowObject.labels){
-            titles[count] = " "+rowObject.labels[i].name;
-            count++;
-        }
-        titles = titles.join();
-        classes += '<span class="flags labeled" title="'+titles+'"> </span>';
-    }else{
-        classes += '<span class="flags"> </span>';
+    for(var i in cellvalue){
+        if(i != "Unseen" && i != "Attachment")
+            classes += '<span class="flags '+(cellvalue[i] ? flags[i] : "")+'"></span>';
     }
-
-    if(rowObject.followupflagged){
-        if(rowObject.followupflagged.followupflag.id < 7){
-            var nameFollowupflag = get_lang(rowObject.followupflagged.followupflag.name);
-        }else{
-            var nameFollowupflag = rowObject.followupflagged.followupflag.name;
-        }
-        if(rowObject.followupflagged.isDone == 1){
-            classes += '<span class="flags followupflagged" title="'+nameFollowupflag+'" style="background:'+rowObject.followupflagged.backgroundColor+';"><img style=" margin-left:-3px;" src="../prototype/modules/mail/img/flagChecked.png"></span>';
-        }else{
-            classes += '<span class="flags followupflagged" title="'+nameFollowupflag+'" style="background:'+rowObject.followupflagged.backgroundColor+';"><img src="../prototype/modules/mail/img/flagEditor.png"></span>';
-        }
-
-    }*/
-
     return classes;
 }
