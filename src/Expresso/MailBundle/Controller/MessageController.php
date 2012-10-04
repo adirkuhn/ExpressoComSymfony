@@ -3,15 +3,16 @@ namespace Expresso\MailBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 //use Ijanki\Bundle\MailMimeDecodeBundle\Util\MailParseDecode;
 
 class MessageController extends Controller
 {
     public function ListMessagesAction( $folder = 'INBOX', $sort = 'SORTDATE' , $limit = 0 , $offset  = 0 )
     {
-
         $imap = $this->get('ExpressoImap');
         $imap->openMailbox( $folder );
+
         $reverse = 0;
 
         if ( $sort[0] === 'R' )
@@ -22,11 +23,53 @@ class MessageController extends Controller
         else
             $sort = defined(constant($sort)) ? constant($sort) :  SORTDATE ;
 
-        $mails = $imap->sort( $sort , $reverse , SE_UID  );
+        $mails = $imap->sort( $sort , $reverse , SE_UID );
 
         if($limit !== 0)
             $mails = array_slice($mails, $offset , $limit );
 
+        $return = $this->getListMessages($imap, $mails);
+
+        $response = new Response( json_encode( $return ) );
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    public function jqGridListMessagesAction($folder = 'INBOX')
+    {
+        $request = Request::createFromGlobals();
+
+        $imap = $this->get('ExpressoImap');
+        $imap->openMailbox( $folder );
+
+        $limit= $request->query->get('rows') ? (int)$request->query->get('rows') : 50;
+        $offset= $request->query->get('page') ? ((int)$request->query->get('page')*$limit - $limit): 0;
+        $sort= $request->query->get('sidx') ? constant($request->query->get('sidx')) : SORTDATE;
+        $reverse= $request->query->get('sord') ?
+                    $request->query->get('sord') === "asc" ? 0 : 1 
+                : 1;
+
+        $return = array();
+
+        $mails = $imap->sort( $sort , $reverse , SE_UID );
+
+        $return['records'] = count($mails);
+        $return['total'] = count($mails) > 0 ? ceil( count($mails)/$limit ) : 0;
+        $return['page'] = (int)$request->query->get('page') ? (int)$request->query->get('page') : 1;
+        
+        if($limit !== 0)
+            $mails = array_slice($mails, $offset , $limit );
+
+        $return['rows'] = $this->getListMessages($imap, $mails);
+
+        $response = new Response( json_encode( $return ) );
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+    }
+
+    private function getListMessages( &$imap , $mails )
+    {
         $return = array();
         foreach( $mails as $i => $UID )
         {
@@ -34,14 +77,14 @@ class MessageController extends Controller
             $mimeBody = $imap->body( $UID );
             $mimeHeader = $imap->header( $UID );
 
-            $return[$i]['id'] = $UID;
+            $return[$i]['id'] = $mailObject->Msgno;
             $return[$i]['flags']['Recent'] = $mailObject->Recent == 'R' ? true : false;
             $return[$i]['flags']['Unseen'] = $mailObject->Unseen == 'U' ? true : false;
             $return[$i]['flags']['Flagged'] = $mailObject->Flagged == 'F' ? true : false;
             $return[$i]['flags']['Answered'] = $mailObject->Answered == 'A' ? true : false;
-            $return[$i]['flags']['Draft'] = $mailObject->Draft == 'D' ? true : false;
-            $return[$i]['flags']['Attachment'] = ( preg_match('/((Content-Disposition:(.)*([\r\n\s]*filename))|(Content-Type:(.)*([\r\n\s]*name)))/i', $mimeBody) ) ? '1' : '0';
-            $return[$i]['flags']['Importance'] = ( preg_match('/importance *: *(.*)\r/i', $mimeHeader , $importance) === 0 ) ? '1' : '0';
+            $return[$i]['flags']['Draft'] = $mailObject->Draft == 'X' ? true : false;
+            $return[$i]['flags']['Attachment'] = ( preg_match('/((Content-Disposition:(.)*([\r\n\s]*filename))|(Content-Type:(.)*([\r\n\s]*name)))/i', $mimeBody) ) ? true : false;
+            $return[$i]['flags']['Importance'] = ( preg_match('/importance *: *(.*)\r/i', $mimeHeader , $importance)) ? true : false;
             $return[$i]['subject'] = $imap->decodeMimeString($mailObject->subject);
             $return[$i]['to'] = (isset($mailObject->to) && is_array($mailObject->to) && count($mailObject->to) > 0) ? $imap->formatMailObjects($mailObject->to) : array();
             $return[$i]['from'] = (isset($mailObject->from) && is_array($mailObject->from) && count($mailObject->from) > 0) ? $imap->formatMailObjects($mailObject->from) : array();
@@ -52,10 +95,7 @@ class MessageController extends Controller
             $return[$i]['date'] = $mailObject->MailDate;
             $return[$i]['size'] = $mailObject->Size;
         }
-
-        $response = new Response( json_encode( $return ) );
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        return $return;
     }
 
     public function InfoMessageAction( $folder , $msgUID )
